@@ -11,7 +11,7 @@ Frontend:
 - HTML5/CSS3: For structure and styling of web pages.
 - JavaScript: Adds interactivity to the UI.
 - JSP: Handles dynamic content generation and server-side rendering.
-- 
+  
 Database:
 - MySQL: Relational database management system used to store and retrieve application data.
   
