@@ -16,23 +16,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.validation.Valid;
 import com.example.cnweb_nhom5.domain.User;
-//import com.example.cnweb_nhom5.service.UploadService;
+import com.example.cnweb_nhom5.service.UploadService;
 import com.example.cnweb_nhom5.service.UserService;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
-    //fix
-    //private final UploadService uploadService;
+   
+    private final UploadService uploadService;
     private final PasswordEncoder passwordEncoder;
 
     public UserController(
-            //UploadService uploadService,
+            UploadService uploadService,
             UserService userService,
             PasswordEncoder passwordEncoder) {
         this.userService = userService;
-        //this.uploadService = uploadService;
+        this.uploadService = uploadService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -103,11 +103,11 @@ public class UserController {
             return "admin/user/create";
         }
 
-        //fix
-        //String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
+       
+        String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
 
-        //user.setAvatar(avatar);
+        user.setAvatar(avatar);
         user.setPassword(hashPassword);
         user.setRole(this.userService.getRoleByName(user.getRole().getName()));
         // save
