@@ -19,11 +19,11 @@ import jakarta.validation.constraints.NotNull;
 @Table(name = "products")
 public class Product implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L; //Đảm bảo tương thích khi serialize
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Tự động sinh khóa ngoại cho ID
+    private long id; 
 
     @NotNull
     @NotEmpty(message = "Tên sản phẩm không được để trống")
@@ -53,7 +53,7 @@ public class Product implements Serializable {
     private String target;
 
     @ManyToOne
-    @JoinColumn(name = "category_id")
+    @JoinColumn(name = "category_id") // Khóa ngoại trong bảng products
     private Category category;
 
     public static long getSerialversionuid() {
