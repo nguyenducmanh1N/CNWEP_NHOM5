@@ -28,7 +28,6 @@ public class ProductController {
 
     private final UploadService uploadService;
     private final ProductService productService;
-
     private final CategoryService categoryService;
     public ProductController(
             UploadService uploadService,
@@ -42,8 +41,6 @@ public class ProductController {
     @GetMapping("/admin/product/create")
     public String getCreateProductPage(Model model) {
         List<Category> categories = categoryService.fetchAllCategories(); 
-        
-        // Thêm danh sách category vào model để truyền sang view
         model.addAttribute("categories", categories);
         model.addAttribute("newProduct", new Product()); 
         return "admin/product/create"; 
@@ -55,6 +52,9 @@ public class ProductController {
             BindingResult newProductBindingResult,
             @RequestParam("categoryId") Long categoryId,
             @RequestParam("hoidanitFile") MultipartFile file) {
+        if (newProductBindingResult.hasErrors()) {
+            return "admin/product/create"; // Quay lại trang tạo nếu có lỗi
+        }
         String image = this.uploadService.handleSaveUploadFile(file, "product");
         pr.setImage(image); 
         Category category = this.categoryService.findById(categoryId);
@@ -98,10 +98,8 @@ public class ProductController {
             currentProduct.setTarget(pr.getTarget());
             Category category = this.categoryService.findById(categoryId);
             currentProduct.setCategory(category);
-    
             this.productService.createProduct(currentProduct); 
         }
-
         return "redirect:/admin/product"; 
     }
     
@@ -116,5 +114,13 @@ public class ProductController {
     public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
         this.productService.deleteProduct(pr.getId());
         return "redirect:/admin/product"; 
+    }
+    
+    @GetMapping("/admin/product/{id}")
+    public String getProductDetailPage(Model model, @PathVariable long id) {
+        Product pr = this.productService.fetchProductById(id).get(); 
+        model.addAttribute("product", pr); 
+        model.addAttribute("id", id); 
+        return "admin/product/detail"; 
     }
 }
