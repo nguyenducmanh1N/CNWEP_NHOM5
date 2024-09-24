@@ -46,6 +46,22 @@ public class ProductService {
         // Khởi tạo một Specification cho sản phẩm
         Specification<Product> combinedSpec = Specification.where(null);
 
+        // Thêm tiêu chí target vào Specification nếu có
+        if (productCriteriaDTO.getTarget() != null && productCriteriaDTO.getTarget().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecs.matchListTarget(productCriteriaDTO.getTarget().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        // Thêm tiêu chí factory vào Specification nếu có
+        if (productCriteriaDTO.getFactory() != null && productCriteriaDTO.getFactory().isPresent()) {
+            Specification<Product> currentSpecs = ProductSpecs.matchListFactory(productCriteriaDTO.getFactory().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+        // Thêm tiêu chí price vào Specification nếu có
+        if (productCriteriaDTO.getPrice() != null && productCriteriaDTO.getPrice().isPresent()) {
+            Specification<Product> currentSpecs = this.buildPriceSpecification(productCriteriaDTO.getPrice().get());
+            combinedSpec = combinedSpec.and(currentSpecs);
+        }
+
         // Trả về danh sách sản phẩm phù hợp với Specification
         return this.productRepository.findAll(combinedSpec, page);
     }
