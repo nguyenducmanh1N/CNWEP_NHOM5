@@ -65,4 +65,50 @@ public class ProductService {
         // Trả về danh sách sản phẩm phù hợp với Specification
         return this.productRepository.findAll(combinedSpec, page);
     }
+    // Xây dựng Specification cho tiêu chí giá
+    public Specification<Product> buildPriceSpecification(List<String> price) {
+        Specification<Product> combinedSpec = Specification.where(null); // Khởi tạo disjunction
+        for (String p : price) {
+            double min = 0;
+            double max = 0;
+
+            // Xác định min và max dựa trên chuỗi giá
+            switch (p) {
+                case "duoi-10-trieu":
+                    min = 1;
+                    max = 10000000;
+                    break;
+                case "10-15-trieu":
+                    min = 10000000;
+                    max = 15000000;
+                    break;
+                case "15-20-trieu":
+                    min = 15000000;
+                    max = 20000000;
+                    break;
+                case "tren-20-trieu":
+                    min = 20000000;
+                    max = 200000000;
+                    break;
+            }
+
+            // Thêm tiêu chí giá vào Specification
+            if (min != 0 && max != 0) {
+                Specification<Product> rangeSpec = ProductSpecs.matchMultiplePrice(min, max);
+                combinedSpec = combinedSpec.or(rangeSpec); // Sử dụng OR để kết hợp các tiêu chí
+            }
+        }
+
+        return combinedSpec; // Trả về Specification kết hợp
+    }
+
+    // Lấy sản phẩm theo ID
+    public Optional<Product> fetchProductById(long id) {
+        return this.productRepository.findById(id);
+    }
+
+    // Xóa sản phẩm theo ID
+    public void deleteProduct(long id) {
+        this.productRepository.deleteById(id);
+    }
 }
