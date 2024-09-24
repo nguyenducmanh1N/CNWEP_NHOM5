@@ -38,4 +38,83 @@ public class ProductController {
         this.productService = productService;
         this.categoryService = categoryService;
     }
+    
+    @GetMapping("/admin/product/create")
+    public String getCreateProductPage(Model model) {
+        List<Category> categories = categoryService.fetchAllCategories(); 
+        
+        // Thêm danh sách category vào model để truyền sang view
+        model.addAttribute("categories", categories);
+        model.addAttribute("newProduct", new Product()); 
+        return "admin/product/create"; 
+    }
+    
+    @PostMapping("/admin/product/create")
+    public String handleCreateProduct(
+            @ModelAttribute("newProduct") @Valid Product pr,
+            BindingResult newProductBindingResult,
+            @RequestParam("categoryId") Long categoryId,
+            @RequestParam("hoidanitFile") MultipartFile file) {
+        String image = this.uploadService.handleSaveUploadFile(file, "product");
+        pr.setImage(image); 
+        Category category = this.categoryService.findById(categoryId);
+        pr.setCategory(category);
+        this.productService.createProduct(pr);
+        return "redirect:/admin/product"; 
+    }
+
+    @GetMapping("/admin/product/update/{id}")
+    public String getUpdateProductPage(Model model, @PathVariable long id) {
+        Optional<Product> currentProduct = this.productService.fetchProductById(id); 
+        List<Category> categories = categoryService.fetchAllCategories(); 
+        model.addAttribute("newProduct", currentProduct.get()); 
+        model.addAttribute("categories", categories); 
+        return "admin/product/update"; 
+    }
+    
+    @PostMapping("/admin/product/update")
+    public String handleUpdateProduct(@ModelAttribute("newProduct") @Valid Product pr,
+            BindingResult newProductBindingResult,
+            @RequestParam("categoryId") Long categoryId, 
+            @RequestParam("hoidanitFile") MultipartFile file) {
+
+        if (newProductBindingResult.hasErrors()) {
+            return "admin/product/update"; 
+        }
+
+        Product currentProduct = this.productService.fetchProductById(pr.getId()).get(); 
+        if (currentProduct != null) {
+            if (!file.isEmpty()) {
+                String img = this.uploadService.handleSaveUploadFile(file, "product");
+                currentProduct.setImage(img);
+            }
+
+            currentProduct.setName(pr.getName());
+            currentProduct.setPrice(pr.getPrice());
+            currentProduct.setQuantity(pr.getQuantity());
+            currentProduct.setDetailDesc(pr.getDetailDesc());
+            currentProduct.setShortDesc(pr.getShortDesc());
+            currentProduct.setFactory(pr.getFactory());
+            currentProduct.setTarget(pr.getTarget());
+            Category category = this.categoryService.findById(categoryId);
+            currentProduct.setCategory(category);
+    
+            this.productService.createProduct(currentProduct); 
+        }
+
+        return "redirect:/admin/product"; 
+    }
+    
+    @GetMapping("/admin/product/delete/{id}")
+    public String getDeleteProductPage(Model model, @PathVariable long id) {
+        model.addAttribute("id", id); 
+        model.addAttribute("newProduct", new Product()); 
+        return "admin/product/delete"; 
+    }
+
+    @PostMapping("/admin/product/delete")
+    public String postDeleteProduct(Model model, @ModelAttribute("newProduct") Product pr) {
+        this.productService.deleteProduct(pr.getId());
+        return "redirect:/admin/product"; 
+    }
 }
