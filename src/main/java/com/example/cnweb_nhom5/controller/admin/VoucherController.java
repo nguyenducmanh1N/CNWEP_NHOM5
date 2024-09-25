@@ -25,7 +25,7 @@ public class VoucherController {
         this.voucherService = voucherService;
 
     }
-
+    // Phương thức lấy danh sách tất cả các voucher và hiển thị trên trang quản lý voucher
     @GetMapping("/admin/voucher")
     public String getAllVouchers(Model model) {
         List<Voucher> vouchers = voucherService.getAllVouchers();
