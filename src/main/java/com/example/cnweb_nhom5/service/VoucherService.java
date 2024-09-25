@@ -35,3 +35,8 @@ public class VoucherService {
     public void deleteVoucher(Long id) {
         voucherRepository.deleteById(id);
     }
+
+    public Voucher getVoucherByCode(String code) {
+        return voucherRepository.findByCode(code);
+    }
+}
