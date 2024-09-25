@@ -23,3 +23,7 @@ public class VoucherService {
     public Optional<Voucher> getVoucherById(Long id) {
         return voucherRepository.findById(id);
     }
+
+    public Voucher createVoucher(Voucher voucher) {
+        return voucherRepository.save(voucher);
+    }
