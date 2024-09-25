@@ -32,7 +32,7 @@ public class VoucherController {
         model.addAttribute("vouchers", vouchers);
         return "admin/voucher/show";
     }
-
+    // Phương thức hiển thị trang tạo voucher mới
     @GetMapping("admin/voucher/create")
     public String createVoucherPage(Model model) {
         model.addAttribute("newVoucher", new Voucher());
