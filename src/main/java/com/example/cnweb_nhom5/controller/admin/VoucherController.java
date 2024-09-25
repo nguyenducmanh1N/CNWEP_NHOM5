@@ -88,6 +88,7 @@ public class VoucherController {
     //     voucherService.deleteVoucher(id);
     //     return "redirect:/admin/voucher";
     // }
+     // Phương thức hiển thị trang xóa voucher
     @GetMapping("/admin/voucher/delete/{id}")
     public String getDeleteVoucherPage(Model model, @PathVariable long id) {
         model.addAttribute("id", id);
