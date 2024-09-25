@@ -55,6 +55,7 @@ public class VoucherController {
     // }
 
     //2
+    // Phương thức hiển thị trang cập nhật voucher
     @GetMapping("admin/voucher/update/{id}")
     public String getUpdateVoucherPage(Model model, @PathVariable long id) {
         Optional<Voucher> currentVoucher = this.voucherService.getVoucherById(id);
