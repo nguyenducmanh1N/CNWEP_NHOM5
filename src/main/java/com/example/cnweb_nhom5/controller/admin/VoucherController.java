@@ -38,7 +38,7 @@ public class VoucherController {
         model.addAttribute("newVoucher", new Voucher());
         return "admin/voucher/create";
     }
-
+    // Phương thức xử lý yêu cầu tạo voucher mới
     @PostMapping("admin/voucher/create")
     public String createVoucher(@ModelAttribute Voucher voucher) {
         voucherService.createVoucher(voucher);
