@@ -27,3 +27,7 @@ public class VoucherService {
     public Voucher createVoucher(Voucher voucher) {
         return voucherRepository.save(voucher);
     }
+    
+    public Voucher updateVoucher(Voucher voucher) {
+        return voucherRepository.save(voucher);
+    }
