@@ -19,6 +19,8 @@ import java.util.Optional;
 public class VoucherController {
 
     private final VoucherService voucherService;
+
+    // Hàm khởi tạo VoucherController và khởi tạo voucherService
     public VoucherController(VoucherService voucherService){
         this.voucherService = voucherService;
 
