@@ -8,8 +8,8 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Nhóm 5: laptopshop" />
-                <meta name="author" content="Nhom5 - 21CN3" />
+                <meta name="description" content="laptopshop" />
+                <meta name="author" content="#" />
                 <title>Create Product </title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
