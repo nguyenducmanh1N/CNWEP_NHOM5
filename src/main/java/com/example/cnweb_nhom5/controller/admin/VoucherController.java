@@ -45,6 +45,7 @@ public class VoucherController {
         return "redirect:/admin/voucher";
     }
     //1
+    // Phương thức hiển thị trang cập nhật voucher
     // @GetMapping("admin/voucher/update/{id}")
     // public String updateVoucherForm(@PathVariable Long id, Model model) {
     //     model.addAttribute("newVoucher", new Voucher());
@@ -93,7 +94,7 @@ public class VoucherController {
         model.addAttribute("newVoucher", new Voucher());
         return "admin/voucher/delete";
     }
-
+    // Phương thức xử lý xóa voucher
     @PostMapping("/admin/voucher/delete")
     public String postDeleteVoucher(Model model, @ModelAttribute("newVoucher") Voucher vc) {
         this.voucherService.deleteVoucher(vc.getId());
