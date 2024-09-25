@@ -19,3 +19,7 @@ public class VoucherService {
     public List<Voucher> getAllVouchers() {
         return voucherRepository.findAll();
     }
+
+    public Optional<Voucher> getVoucherById(Long id) {
+        return voucherRepository.findById(id);
+    }
