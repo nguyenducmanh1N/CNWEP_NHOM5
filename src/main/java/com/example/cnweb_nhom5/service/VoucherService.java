@@ -15,3 +15,7 @@ public class VoucherService {
     public VoucherService(VoucherRepository voucherRepository) {
         this.voucherRepository = voucherRepository;
     }
+
+    public List<Voucher> getAllVouchers() {
+        return voucherRepository.findAll();
+    }
