@@ -62,7 +62,7 @@ public class VoucherController {
         model.addAttribute("newVoucher", currentVoucher.get());
         return "admin/voucher/update";
     }
-    
+    // Phương thức xử lý cập nhật voucher sau khi được sửa đổi
     @PostMapping("/admin/voucher/update")
     public String handleUpdateVoucher(@ModelAttribute("newVoucher") @Valid Voucher vc,
             BindingResult newVoucherBindingResult) {
