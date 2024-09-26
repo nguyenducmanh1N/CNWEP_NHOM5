@@ -20,9 +20,31 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import java.time.LocalDateTime;
 
-import vn.hoidanit.laptopshop.domain.Product;
-import vn.hoidanit.laptopshop.domain.Review;
-import vn.hoidanit.laptopshop.domain.User;
-import vn.hoidanit.laptopshop.service.ProductService;
-import vn.hoidanit.laptopshop.service.ReviewService;
-import vn.hoidanit.laptopshop.service.UserService;
+import com.example.cnweb_nhom5.domain.Product;
+import com.example.cnweb_nhom5.domain.Review;
+import com.example.cnweb_nhom5.domain.User;
+import com.example.cnweb_nhom5.service.ProductService;
+import com.example.cnweb_nhom5.service.ReviewService;
+import com.example.cnweb_nhom5.service.UserService;
+
+@Controller
+
+public class ReviewController {
+    private final ReviewService reviewService;
+    private final ProductService productService;
+    private final UserService userService;
+
+    
+    public ReviewController(ReviewService reviewService, ProductService productService, UserService userService)
+    {
+        this.reviewService = reviewService;
+        this.productService = productService;
+        this.userService = userService;
+    }
+    @GetMapping("/product/review/{productId}")
+    public String getCreateReviewPage(@PathVariable Long productId,Model model) {
+ 
+        model.addAttribute("productId", productId);
+        model.addAttribute("newReview", new Review());
+        return "client/product/review";
+    }
