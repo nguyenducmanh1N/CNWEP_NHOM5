@@ -1,4 +1,4 @@
-package vn.hoidanit.laptopshop.service;
+package com.example.cnweb_nhom5.laptopshop.service;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,9 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import vn.hoidanit.laptopshop.domain.OrderDetail;
-import vn.hoidanit.laptopshop.repository.OrderDetailRepository;
-import vn.hoidanit.laptopshop.repository.OrderRepository;
+import com.example.cnweb_nhom5.OrderRepository;
+import com.example.cnweb_nhom5.domain.OrderDetail;
+import com.example.cnweb_nhom5.repository.OrderDetailRepository;
 
 @Service
 public class OrderService {
