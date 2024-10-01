@@ -8,8 +8,8 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="laptopshop" />
-                <meta name="author" content="#" />
+                <meta name="description" content="Dự án FlowerShop" />
+                <meta name="author" content="IT" />
                 <title>Create Product </title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -98,9 +98,9 @@
                                                     ${errorQuantity}
                                                 </div>
 
-                                                <div class="mb-3 col-12 col-md-6">
+                                                <!-- <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Factory:</label>
-                                                    <form:select class="form-select" path="factory">
+                                                     <form:select class="form-select" path="factory">
                                                         <form:option value="APPLE">Apple (MacBook)</form:option>
                                                         <form:option value="ASUS">Asus</form:option>
                                                         <form:option value="LENOVO">Lenovo</form:option>
@@ -108,8 +108,25 @@
                                                         <form:option value="LG">LG</form:option>
                                                         <form:option value="ACER">Acer</form:option>
                                                     </form:select>
-                                                </div>
+                                                    <select id="factory" name="factory"></select>
+                                                        <option value="">Select Factory</option>
+                                                        <c:forEach var="factory" items="${factories}">
+                                                            <option value="${category.id}">${category.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div> -->
                                                 <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Factory:</label>
+                                                    <select id="factory" name="factory" class="form-select">
+                                                        <option value="">Select Factory</option>
+                                                        <!-- Duyệt qua danh sách factories và hiển thị mỗi factory -->
+                                                        <c:forEach var="factory" items="${factories}">
+                                                            <option value="${factory.id}">${factory.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div>
+
+                                                <!-- <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Target:</label>
                                                     <form:select class="form-select" path="target">
                                                         <form:option value="GAMING">Gaming</form:option>
@@ -120,20 +137,40 @@
                                                         <form:option value="MONG-NHE">Mỏng nhẹ</form:option>
                                                         <form:option value="DOANH-NHAN">Doanh nhân</form:option>
                                                     </form:select>
+                                                </div> -->
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Target :</label>
+                                                    <select id="target" name="target" class="form-select">
+                                                        <option value="">Select Taget</option>
+                                                        <!-- Duyệt qua danh sách factories và hiển thị mỗi factory -->
+                                                        <c:forEach var="target" items="${targets}">
+                                                            <option value="${target.id}">${target.name}</option>
+                                                        </c:forEach>
+                                                    </select>
                                                 </div>
                                                 <div class="mb-3 col-12 col-md-6">
                                                     <label for="avatarFile" class="form-label">Image:</label>
                                                     <input class="form-control" type="file" id="avatarFile"
-                                                        accept=".png, .jpg, .jpeg" name="hoidanitFile" />
+                                                        accept=".png, .jpg, .jpeg" name="flowershopFile" />
                                                 </div>
                                                 <div class="col-12 mb-3">
                                                     <img style="max-height: 250px; display: none;" alt="avatar preview"
                                                         id="avatarPreview" />
                                                 </div>
-                                                <div class="mb-3 col-12 col-md-6">
+                                                <!-- <div class="mb-3 col-12 col-md-6">
                                                     <label for="category">Category</label>
                                                     <select id="category" name="categoryId">
                                                         <option value="">Select Category</option>
+                                                        <c:forEach var="category" items="${categories}">
+                                                            <option value="${category.id}">${category.name}</option>
+                                                        </c:forEach>
+                                                    </select>
+                                                </div> -->
+                                                <div class="mb-3 col-12 col-md-6">
+                                                    <label class="form-label">Category :</label>
+                                                    <select id="category" name="categoryId" class="form-select">
+                                                        <option value="">Select Category</option>
+                                                        <!-- Duyệt qua danh sách factories và hiển thị mỗi factory -->
                                                         <c:forEach var="category" items="${categories}">
                                                             <option value="${category.id}">${category.name}</option>
                                                         </c:forEach>

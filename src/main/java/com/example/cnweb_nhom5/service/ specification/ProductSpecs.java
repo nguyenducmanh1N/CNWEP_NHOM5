@@ -69,5 +69,5 @@ public class ProductSpecs {
                 root.get(Product_.PRICE), min, max);
     }
 
-    
+
 }

@@ -70,7 +70,7 @@ public class Product implements Serializable {
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
-    
+
     public Factory getFactory() {
         return factory;
     }
@@ -164,7 +164,7 @@ public class Product implements Serializable {
         this.sold = sold;
     }
 
-   
+
 
     @Override
     public String toString() {
