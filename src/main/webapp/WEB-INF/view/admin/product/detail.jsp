@@ -8,9 +8,9 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Hỏi Dân IT - Dự án laptopshop" />
-                <meta name="author" content="Hỏi Dân IT" />
-                <title>Detail Product  </title>
+                <meta name="description" content=" Dự án FlowerShop" />
+                <meta name="author" content="IT" />
+                <title>Detail Product</title>
                 <link href="/css/styles.css" rel="stylesheet" />
 
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -20,7 +20,7 @@
                 <jsp:include page="../layout/header.jsp" />
                 <div id="layoutSidenav">
                     <jsp:include page="../layout/sidebar.jsp" />
-                    <div id="layoutSidaenav_content">
+                    <div id="layoutSidenav_content">
                         <main>
                             <div class="container-fluid px-4">
                                 <h1 class="mt-4">Products</h1>
@@ -53,13 +53,12 @@
                                                     <li class="list-group-item">Giới thiệu : ${product.shortDesc}</li>
                                                     <li class="list-group-item">Số lượng: ${product.quantity}</li>
                                                     <li class="list-group-item">Đã bán: ${product.sold}</li>
-                                                    <li class="list-group-item">Factory: ${product.factory}</li>
-                                                    <li class="list-group-item">Target: ${product.target}</li>
+                                                    <li class="list-group-item">Factory: ${product.factory.name}</li>
+                                                    <li class="list-group-item">Target: ${product.target.name}</li>
                                                     <li class="list-group-item">Danh Mục: ${product.category.name}</li>
                                                 </ul>
                                             </div>
                                             <a href="/admin/product" class="btn btn-success mt-3">Back</a>
-
                                         </div>
 
                                     </div>

@@ -52,7 +52,7 @@ public class ProductService {
             OrderStatusRepository orderStatusRepository,
             PaymentRepository paymentRepository,
             final PaymentService paymentService
-            ) {
+    ) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
@@ -63,8 +63,8 @@ public class ProductService {
         this.paymentRepository = paymentRepository;
         this.paymentService = paymentService;
     }
-    
-    
+
+
 
     public List<Product> fetchNewestProducts(Pageable pageable) {
         return productRepository.findAllByOrderByCreatedDateDesc(pageable).getContent();
@@ -289,9 +289,9 @@ public class ProductService {
 
     public void handlePlaceOrder(
             User user, HttpSession session,
-            String receiverName, String receiverAddress, String receiverPhone 
+            String receiverName, String receiverAddress, String receiverPhone
             , Long paymentId
-            ) {
+    ) {
 
         // step 1: get cart by user
         Cart cart = this.cartRepository.findByUser(user);
@@ -314,26 +314,26 @@ public class ProductService {
         session.setAttribute("sum", 0);
     }
 
-    private Order createOrder(User user, 
-        String receiverName, String receiverAddress, 
-        String receiverPhone, Cart cart
-        //,Payment payment
-        , Long paymentId
+    private Order createOrder(User user,
+                              String receiverName, String receiverAddress,
+                              String receiverPhone, Cart cart
+                              //,Payment payment
+            , Long paymentId
     ) {
         Order order = new Order();
         order.setUser(user);
         order.setReceiverName(receiverName);
         order.setReceiverAddress(receiverAddress);
         order.setReceiverPhone(receiverPhone);
-       // order.setPayment(payment);
+        // order.setPayment(payment);
         // Tìm Payment theo paymentId
         Payment payment = this.paymentService.findById(paymentId); // Sử dụng Optional<Payment>
-       if (payment != null) {
-            
-           order.setPayment(payment); // Gán payment cho đơn hàng
-       } else {
-           throw new RuntimeException("Invalid payment method."); // Ném ngoại lệ nếu payment không hợp lệ
-       }
+        if (payment != null) {
+
+            order.setPayment(payment); // Gán payment cho đơn hàng
+        } else {
+            throw new RuntimeException("Invalid payment method."); // Ném ngoại lệ nếu payment không hợp lệ
+        }
 
         // Lấy OrderStatus từ database, giả sử có phương thức tìm kiếm theo tên trạng thái
         OrderStatus pendingStatus = this.orderStatusRepository.findByName("PENDING");

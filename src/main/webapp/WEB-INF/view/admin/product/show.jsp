@@ -9,9 +9,9 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="laptopshop" />
-                <meta name="author" content="#" />
-                <title> Dashboard </title>
+                <meta name="description" content="Dự án FlowerShop" />
+                <meta name="author" content="IT" />
+                <title>Dashboard </title>
                 <link href="/css/styles.css" rel="stylesheet" />
                 <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
             </head>
@@ -46,6 +46,7 @@
                                                         <th>Price</th>
                                                         <th>Factory</th>
                                                         <th>Action</th>
+                                                        <th>sold</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -57,7 +58,7 @@
                                                                 <fmt:formatNumber type="number"
                                                                     value="${product.price}" /> đ
                                                             </td>
-                                                            <td>${product.factory}</td>
+                                                            <td>${product.factory.name}</td>
                                                             <td>
                                                                 <a href="/admin/product/${product.id}"
                                                                     class="btn btn-success">View</a>
@@ -66,6 +67,7 @@
                                                                 <a href="/admin/product/delete/${product.id}"
                                                                     class="btn btn-danger">Delete</a>
                                                             </td>
+                                                            <td>${product.sold}</td>
                                                         </tr>
 
                                                     </c:forEach>
