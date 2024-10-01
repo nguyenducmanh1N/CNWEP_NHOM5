@@ -1,7 +1,11 @@
 package com.example.cnweb_nhom5.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -14,16 +18,17 @@ import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Null;
 
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
 
-    private static final long serialVersionUID = 1L; //Đảm bảo tương thích khi serialize
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Tự động sinh khóa ngoại cho ID
-    private long id; 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @NotNull
     @NotEmpty(message = "Tên sản phẩm không được để trống")
@@ -49,12 +54,38 @@ public class Product implements Serializable {
     private long quantity;
 
     private long sold;
-    private String factory;
-    private String target;
+    @ManyToOne
+    @JoinColumn(name = "factory_id")
+    private Factory factory;
 
     @ManyToOne
-    @JoinColumn(name = "category_id") // Khóa ngoại trong bảng products
+    @JoinColumn(name = "target_id")
+    private Target target;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
     private Category category;
+
+
+    @CreationTimestamp
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
+    
+    public Factory getFactory() {
+        return factory;
+    }
+
+    public void setFactory(Factory factory) {
+        this.factory = factory;
+    }
+
+    public Target getTarget() {
+        return target;
+    }
+
+    public void setTarget(Target target) {
+        this.target = target;
+    }
 
     public static long getSerialversionuid() {
         return serialVersionUID;
@@ -133,28 +164,13 @@ public class Product implements Serializable {
         this.sold = sold;
     }
 
-    public String getFactory() {
-        return factory;
-    }
-
-    public void setFactory(String factory) {
-        this.factory = factory;
-    }
-
-    public String getTarget() {
-        return target;
-    }
-
-    public void setTarget(String target) {
-        this.target = target;
-    }
+   
 
     @Override
     public String toString() {
         return "Product [id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", detailDesc="
                 + detailDesc + ", shortDesc=" + shortDesc + ", quantity=" + quantity + ", sold=" + sold + ", factory="
-                + factory + ", target=" + target + "]"; 
+                + factory + ", target=" + target + "]";
     }
-    
-}
 
+}
