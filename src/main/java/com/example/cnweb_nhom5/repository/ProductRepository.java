@@ -1,5 +1,7 @@
 package com.example.cnweb_nhom5.repository;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -15,5 +17,6 @@ public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpec
     Page<Product> findAll(Pageable page);
 
     Page<Product> findAll(Specification<Product> spec, Pageable page);
-
-
+    
+    Page<Product> findAllByOrderByCreatedDateDesc(Pageable pageable);
+}
