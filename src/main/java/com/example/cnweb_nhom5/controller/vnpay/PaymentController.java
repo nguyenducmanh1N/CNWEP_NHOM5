@@ -167,4 +167,38 @@ public class PaymentController {
         response.sendRedirect(paymentUrl);
     }
 
+    @GetMapping("/payment_infor")
+    public String handleTransaction(
+            @RequestParam(value = "vnp_Amount") String amount,
+            @RequestParam(value = "vnp_BankCode") String bankCode,
+            @RequestParam(value = "vnp_OrderInfo") String order,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode,
+
+            HttpServletRequest request) {
+
+        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+        HttpSession session = request.getSession(false);
+        User currentUser = null;
+
+        if (session != null && session.getAttribute("id") != null) {
+            long id = (long) session.getAttribute("id");
+            currentUser = new User();
+            currentUser.setId(id);
+        }
+
+        
+        if (responseCode.equals("00")) {
+            transactionStatusDTO.setStatus("OK");
+            transactionStatusDTO.setMessage("Successfully");
+            transactionStatusDTO.setData("");
+
+            
+        } else {
+            transactionStatusDTO.setStatus("no");
+            transactionStatusDTO.setMessage("failed");
+            transactionStatusDTO.setData("");
+        }
+        return "redirect:/thanks";
+    }
+
 }
