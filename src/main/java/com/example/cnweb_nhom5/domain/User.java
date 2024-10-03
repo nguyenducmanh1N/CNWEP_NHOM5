@@ -3,6 +3,7 @@ package com.example.cnweb_nhom5.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -55,6 +56,17 @@ public class User implements Serializable {
     // @OneToOne(mappedBy = "user")
     // private Cart cart;
 
+    @Column(name = "reset_code")
+    private String resetCode;
+
+    
+    public String getResetCode() {
+        return resetCode;
+    }
+
+    public void setResetCode(String resetCode) {
+        this.resetCode = resetCode;
+    }
     @Override
     public String toString() {
         return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
