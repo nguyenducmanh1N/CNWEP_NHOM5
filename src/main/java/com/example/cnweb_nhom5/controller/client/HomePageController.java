@@ -78,31 +78,7 @@ public class HomePageController {
        
         return "client/homepage/show";
     }
-    @GetMapping("/category/{categoryId}")
-    public String getProductsByCategory(@PathVariable("categoryId") Long categoryId, Model model,
-                                        @RequestParam("page") Optional<String> pageOptional) {
-        int page = 1;
-        try {
-            if (pageOptional.isPresent()) {
-                // Convert from String to int
-                page = Integer.parseInt(pageOptional.get());
-            }
-        } catch (Exception e) {
-            // Handle exception if parsing fails, default to page = 1
-            page = 1;
-        }
-
-        // Fetch products by category with pagination
-        Pageable pageable = PageRequest.of(page - 1, 12);
-       
-
-        // Add data to the model
-        model.addAttribute("currentPage", page);
-        
-        model.addAttribute("selectedCategory", categoryId);  // To highlight selected category
-
-        return "client/homepage/show";
-    }
+   
 
 
     @GetMapping("/register")
