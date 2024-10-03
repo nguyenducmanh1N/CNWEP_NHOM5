@@ -1,8 +1,12 @@
-package com.example.cnweb_nhom5.laptopshop.domain;
+package com.example.cnweb_nhom5.domain;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -34,6 +38,10 @@ public class Cart implements Serializable {
     @OneToMany(mappedBy = "cart")
     List<CartDetail> cartDetails;
 
+    @CreationTimestamp
+    @Column(name = "created_date", updatable = false)
+    private LocalDateTime createdDate;
+    
     public long getId() {
         return id;
     }

@@ -35,6 +35,18 @@ public class Order implements Serializable {
 
     private String receiverPhone;
 
+    @ManyToOne
+    @JoinColumn(name = "payment_id", nullable = false)
+    private Payment payment; // Tham chiếu đến phương thức thanh toán
+    
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }\
+
     // Quan hệ nhiều-một với bảng OrderStatus
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -45,6 +57,7 @@ public class Order implements Serializable {
     private Voucher voucher; // Thêm liên kết đến voucher nếu áp dụng voucher
 
     private double totalPayable;
+    
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
