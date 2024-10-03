@@ -112,6 +112,18 @@ public class HomePageController {
         return "redirect:/login";
 
     }
+    
+    @GetMapping("/login")
+    public String getLoginPage(Model model) {
+
+        return "client/auth/login";
+    }
+
+    @GetMapping("/access-deny")
+    public String getDenyPage(Model model) {
+
+        return "client/auth/deny";
+    }
 
     
 }
