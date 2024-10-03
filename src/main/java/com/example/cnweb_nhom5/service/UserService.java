@@ -90,4 +90,7 @@ public class UserService {
     // public long countOrders() {
     //     return this.orderRepository.count();
     // }
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
