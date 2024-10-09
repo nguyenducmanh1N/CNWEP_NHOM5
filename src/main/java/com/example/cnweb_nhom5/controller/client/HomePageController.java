@@ -122,7 +122,7 @@ public class HomePageController {
     @GetMapping("/access-deny")
     public String getDenyPage(Model model) {
 
-        return "client/auth/deny";
+        return "client/auth/403";
     }
 
     
