@@ -1,8 +1,7 @@
-package com.example.cnweb_nhom5.domain.dto;
+package com.example.cnweb_nhom5.domain;
 
 import java.util.List;
 
-import com.example.cnweb_nhom5.domain.Product;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
