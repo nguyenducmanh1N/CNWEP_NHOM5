@@ -26,5 +26,27 @@ public class ResetPasswordController {
         return "client/auth/reset-password";
     }
 
+    @PostMapping("/reset-password")
+    public String handleResetPassword(@RequestParam("resetCode") String resetCode,
+            @RequestParam("newPassword") String newPassword, Model model) {
+        // Kiểm tra mã reset có hợp lệ không
+        User user = userService.findByResetCode(resetCode);
+        if (user == null) {
+            model.addAttribute("error", "Reset code không hợp lệ.");
+            return "client/auth/reset-password";
+        }
+        System.out.println("User found: " + user.getEmail());
+        System.out.println("New password: " + newPassword);
+
+        // Cập nhật mật khẩu mới
+        user.setPassword(passwordEncoder.encode(newPassword));
+        user.setResetCode(null); // Xóa mã reset sau khi dùng
+        System.out.println("Encoded password: " + user.getPassword());
+
+        userService.save(user);
+
+        model.addAttribute("message", "Mật khẩu đã được cập nhật.");
+        return "redirect:/login";
+    }
    
 }
