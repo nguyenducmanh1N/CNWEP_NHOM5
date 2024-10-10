@@ -18,14 +18,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.cnweb_nhom5.config.VNPayConfig;
-import com.example.cnweb_nhom5.domain.dto.PaymentInfoVNPAYDTO;
-import com.example.cnweb_nhom5.service.PaymentService;
-import com.example.cnweb_nhom5.service.ProductService;
+import com.example.cnweb_nhom5.domain.Cart;
+import com.example.cnweb_nhom5.domain.CartDetail;
+import com.example.cnweb_nhom5.domain.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/api/payment")
@@ -130,3 +132,143 @@ public class PaymentController {
                     query.append('&');
                     hashData.append('&');
                 }
+            }
+        }
+        String queryUrl = query.toString();
+        String vnp_SecureHash = VNPayConfig.hmacSHA512(VNPayConfig.secretKey, hashData.toString());
+        queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+        String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
+
+        // PaymentRestDTO paymentRestDTO = new PaymentRestDTO();
+        // paymentRestDTO.setStatus("OKE");
+        // paymentRestDTO.setMessage("successfully");
+        // paymentRestDTO.setUrl(paymentUrl);
+        
+        // com.google.gson.JsonObject job = new JsonObject();
+        // job.addProperty("code", "00");
+        // job.addProperty("message", "success");
+        // job.addProperty("data", paymentUrl);
+        // Gson gson = new Gson();
+        // resp.getWriter().write(gson.toJson(job));
+        
+        //return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO);
+        // + "&receiverName=" + receiverName + "&receiverAddress=" + receiverAddress
+        // +"&receiverPhone="+ receiverPhone+"&paymentId="+ paymentId
+        System.out.println("Receiver Name: " + receiverName);
+        System.out.println("Receiver Address: " + receiverAddress);
+        System.out.println("Receiver Phone: " + receiverPhone);
+        System.out.println("Payment ID: " + paymentId);
+        response.sendRedirect(paymentUrl);
+    }
+
+    @GetMapping("/payment_infor")
+    public String handleTransaction(
+            @RequestParam(value = "vnp_Amount") String amount,
+            @RequestParam(value = "vnp_BankCode") String bankCode,
+            @RequestParam(value = "vnp_OrderInfo") String order,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode,
+           
+            HttpServletRequest request
+             ) {
+        
+        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+        HttpSession session = request.getSession(false);
+        User currentUser = null;
+
+        if (session != null && session.getAttribute("id") != null) {
+            long id = (long) session.getAttribute("id");
+            currentUser = new User();
+            currentUser.setId(id);
+        }
+
+        // ObjectMapper mapper = new ObjectMapper();
+        // try {
+        //     PaymentInfoVNPAYDTO paymentInfo = mapper.readValue(order, PaymentInfoVNPAYDTO.class);
+        //     System.out.println("PAYMENT INFO:" + paymentInfo);
+
+        // } catch (JsonMappingException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // } catch (JsonProcessingException e) {
+        //     // TODO Auto-generated catch block
+        //     e.printStackTrace();
+        // }
+
+        // if (responseCode.equals("00")) {
+            
+        //     Cart cart = this.productService.fetchByUser(currentUser);
+        //     List<CartDetail> cartDetails = cart.getCartDetails();
+            
+        //     // Duyệt qua từng sản phẩm trong giỏ hàng
+        //     for (CartDetail cartDetail : cartDetails) {
+        //         Product product = cartDetail.getProduct();
+
+        //         // Cập nhật số lượng sold và quantity của sản phẩm
+        //         long quantityBought = cartDetail.getQuantity();
+        //         product.setSold(product.getSold() + quantityBought);
+        //         product.setQuantity(product.getQuantity() - quantityBought);
+
+        //         // Lưu thay đổi vào database
+        //         productService.createProduct(product);
+        //     }
+
+        //     this.productService.handlePlaceOrder(currentUser, session, 
+        //             paymentInfo.getReceiverName(),
+        //             paymentInfo.getReceiverAddress(),
+        //             paymentInfo.getReceiverPhone(),
+        //             paymentInfo.getPaymentId());
+        // } else {
+        //     transactionStatusDTO.setStatus("no");
+        //     transactionStatusDTO.setMessage("failed");
+        //     transactionStatusDTO.setData("");
+            
+        // }
+        if (responseCode.equals("00")) {
+            transactionStatusDTO.setStatus("OK");
+            transactionStatusDTO.setMessage("Successfully");
+            transactionStatusDTO.setData("");
+
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                // Lấy thông tin từ vnp_OrderInfo (order)
+                PaymentInfoVNPAYDTO paymentInfo = mapper.readValue(order, PaymentInfoVNPAYDTO.class);
+                System.out.println("PAYMENT INFO: " + paymentInfo);
+
+                // Sử dụng thông tin từ paymentInfo để đặt hàng
+                Cart cart = this.productService.fetchByUser(currentUser);
+                List<CartDetail> cartDetails = cart.getCartDetails();
+
+                // Duyệt qua từng sản phẩm trong giỏ hàng
+                for (CartDetail cartDetail : cartDetails) {
+                    Product product = cartDetail.getProduct();
+
+                    // Cập nhật số lượng sold và quantity của sản phẩm
+                    long quantityBought = cartDetail.getQuantity();
+                    product.setSold(product.getSold() + quantityBought);
+                    product.setQuantity(product.getQuantity() - quantityBought);
+
+                    // Lưu thay đổi vào database
+                    productService.createProduct(product);
+                }
+
+                // Gọi phương thức lưu thông tin đơn hàng với thông tin từ PaymentInfoVNPAYDTO
+                this.productService.handlePlaceOrder(
+                    currentUser, session, 
+                    paymentInfo.getReceivedName(), 
+                    paymentInfo.getReceiverAddress(), 
+                    paymentInfo.getReceivedPhone(), 
+                    paymentInfo.getPaymentId()
+                );
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            transactionStatusDTO.setStatus("no");
+            transactionStatusDTO.setMessage("failed");
+            transactionStatusDTO.setData("");
+        }
+        return "redirect:/thanks";
+    }
+}    
