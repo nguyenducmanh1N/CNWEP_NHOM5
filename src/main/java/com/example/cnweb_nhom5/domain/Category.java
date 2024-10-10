@@ -1,6 +1,5 @@
 package com.example.cnweb_nhom5.domain;
 
-import java.io.Serializable;
 import java.util.List;
 
 import jakarta.persistence.Entity;
@@ -9,23 +8,32 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "roles")
-public class Role implements Serializable {
+@Table(name = "categories")
+public class Category {
+
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotNull
+    @NotEmpty(message = "Tên danh mục không được để trống")
     private String name;
 
     private String description;
 
-    // role - one => many - users . ctrl + k . press 's'
-    // @OneToMany(mappedBy = "role")
-    // private List<User> users;
+    // category - one => many - products
+    @OneToMany(mappedBy = "category")
+    private List< Product > products;
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
 
     public long getId() {
         return id;
@@ -51,9 +59,13 @@ public class Role implements Serializable {
         this.description = description;
     }
 
-    @Override
-    public String toString() {
-        return "Role [id=" + id + ", name=" + name + ", description=" + description + "]";
+    public List<Product> getProducts() {
+        return products;
     }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
 
 }
