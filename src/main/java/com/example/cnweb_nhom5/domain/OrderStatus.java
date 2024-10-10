@@ -50,4 +50,3 @@ public class OrderStatus {
         this.description = description;
     }
 }
-
