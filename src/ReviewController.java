@@ -48,4 +48,36 @@ public class ReviewController {
         return "client/product/review";
     }
 
+
+    @PostMapping("/client/product/review")
+    public String handleCreateReview(
+            @RequestParam("productId") Long productId,
+            @ModelAttribute("newReview") @Valid Review rv,
+            BindingResult newProductBindingResult,
+            Model model) {
+        if (newProductBindingResult.hasErrors()) {
+            return "client/product/review";
+        }
+
+        Optional<Product> productOptional = this.productService.fetchProductById(productId);
+        if (productOptional.isEmpty()) {
+            model.addAttribute("error", "Product not found");
+            return "client/product/review";
+        }
+
+        rv.setProduct(productOptional.get());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+
+        // Tìm User bằng email thay vì username
+        com.example.cnweb_nhom5.domain.User currentUser = this.userService.findByEmail(userDetails.getUsername());
+
+        rv.setUser(currentUser);
+        this.reviewService.createReview(rv);
+
+        return "redirect:/product/" + productId;
+    }
+
+}
  
