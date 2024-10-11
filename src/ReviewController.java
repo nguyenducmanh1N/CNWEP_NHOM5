@@ -26,4 +26,26 @@ import java.util.Optional;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import java.time.LocalDateTime;
+
+@Controller
+public class ReviewController {
+    private final ReviewService reviewService;
+    private final ProductService productService;
+    private final UserService userService;
+
+    
+    public ReviewController(ReviewService reviewService, ProductService productService, UserService userService)
+    {
+        this.reviewService = reviewService;
+        this.productService = productService;
+        this.userService = userService;
+    }
+    @GetMapping("/product/review/{productId}")
+    public String getCreateReviewPage(@PathVariable Long productId,Model model) {
+ 
+        model.addAttribute("productId", productId);
+        model.addAttribute("newReview", new Review());
+        return "client/product/review";
+    }
+
  
