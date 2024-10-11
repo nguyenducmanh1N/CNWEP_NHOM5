@@ -27,6 +27,7 @@ public class Category {
 
     private String description;
 
+    // Thiết lập quan hệ một-nhiều giữa Category và Product
     // category - one => many - products
     @OneToMany(mappedBy = "category")
     private List<Product> products;
