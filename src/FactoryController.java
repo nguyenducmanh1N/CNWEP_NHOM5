@@ -36,3 +36,25 @@ public class FactoryController {
         model.addAttribute("newFactory", new Factory());
         return "admin/factory/create";
     }
+
+    @PostMapping("/admin/factory/create")
+    public String handleCreateFactory(
+            @ModelAttribute("newFactory") @Valid Factory factory,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return "admin/factory/create";
+        }
+
+        factoryService.createFactory(factory);
+        return "redirect:/admin/factory";
+    }
+
+    @GetMapping("/admin/factory/update/{id}")
+    public String getUpdateFactoryPage(Model model, @PathVariable long id) {
+        Optional<Factory> factory = factoryService.fetchFactoryById(id);
+        if (factory.isPresent()) {
+            model.addAttribute("newFactory", factory.get());
+            return "admin/factory/update";
+        }
+        return "redirect:/admin/factory";
+    }
