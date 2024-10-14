@@ -58,3 +58,22 @@ public class FactoryController {
         }
         return "redirect:/admin/factory";
     }
+
+    @PostMapping("/admin/factory/update")
+    public String handleUpdateFactory(
+            @ModelAttribute("newFactory") @Valid Factory factory,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return "admin/factory/update";
+        }
+
+        factoryService.createFactory(factory);
+        return "redirect:/admin/factory";
+    }
+
+    @GetMapping("/admin/factory/delete/{id}")
+    public String deleteFactory(@PathVariable long id) {
+        factoryService.deleteFactory(id);
+        return "redirect:/admin/factory";
+    }
+}
