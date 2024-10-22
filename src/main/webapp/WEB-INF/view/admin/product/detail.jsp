@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
         <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
             <!DOCTYPE html>
             <html lang="en">
@@ -8,9 +9,7 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-
-                <meta name="description" content="FlowerShop" />
-
+                <meta name="description" content=" Dự án FlowerShop" />
                 <meta name="author" content="IT" />
                 <title>Detail Product</title>
                 <link href="/css/styles.css" rel="stylesheet" />
@@ -41,8 +40,14 @@
                                             <hr />
 
                                             <div class="card" style="width: 60%">
-                                                <img class="card-img-top" src="/images/product/${product.image}"
-                                                    alt="Card image cap">
+                                                <!-- <img class="card-img-top" src="/images/product/${product.images}"
+                                                    alt="Card image cap"> -->
+                                                
+                                                <div class="card-img-top">
+                                                    <c:forEach var="image" items="${fn:split(product.images, ';')}">
+                                                        <img src="/images/product/${image}" alt="Product Image" style="width: 20%; margin-bottom: 10px;">
+                                                    </c:forEach>
+                                                </div>
 
                                                 <div class="card-header">
                                                     Product information
