@@ -45,7 +45,7 @@ public class Order implements Serializable {
 
     public void setPayment(Payment payment) {
         this.payment = payment;
-    }\
+    }
 
     // Quan hệ nhiều-một với bảng OrderStatus
     @ManyToOne
