@@ -14,16 +14,16 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import jakarta.validation.Valid;
 import com.example.cnweb_nhom5.domain.User;
 import com.example.cnweb_nhom5.service.UploadService;
 import com.example.cnweb_nhom5.service.UserService;
-
-import jakarta.validation.Valid;
 
 @Controller
 public class UserController {
 
     private final UserService userService;
+   
     private final UploadService uploadService;
     private final PasswordEncoder passwordEncoder;
 
@@ -42,7 +42,7 @@ public class UserController {
         System.out.println(arrUsers);
 
         model.addAttribute("eric", "test");
-        model.addAttribute("flowershop", "from controller with model");
+        model.addAttribute("hoidanit", "from controller with model");
         return "hello";
     }
 
@@ -62,7 +62,7 @@ public class UserController {
             // TODO: handle exceptio
         }
 
-        Pageable pageable = PageRequest.of(page - 1, 5);
+        Pageable pageable = PageRequest.of(page - 1, 1);
         Page<User> usersPage = this.userService.getAllUsers(pageable);
         List<User> users = usersPage.getContent();
         model.addAttribute("users1", users);
@@ -90,7 +90,7 @@ public class UserController {
     public String createUserPage(Model model,
             @ModelAttribute("newUser") @Valid User user,
             BindingResult newUserBindingResult,
-            @RequestParam("flowershopFile") MultipartFile file) {
+            @RequestParam("hoidanitFile") MultipartFile file) {
 
         // List<FieldError> errors = newUserBindingResult.getFieldErrors();
         // for (FieldError error : errors) {
@@ -103,7 +103,7 @@ public class UserController {
             return "admin/user/create";
         }
 
-        //
+       
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
         String hashPassword = this.passwordEncoder.encode(user.getPassword());
 
@@ -123,20 +123,9 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/update")
-    public String postUpdateUser(Model model, @ModelAttribute("newUser") User user,
-            @RequestParam("flowershopFile") MultipartFile file,
-            BindingResult newProductBindingResult
-            ) {
-
-        if (newProductBindingResult.hasErrors()) {
-                    return "admin/product/update";
-        }
+    public String postUpdateUser(Model model, @ModelAttribute("newUser") User user) {
         User currentUser = this.userService.getUserById(user.getId());
         if (currentUser != null) {
-            if (!file.isEmpty()) {
-                String img = this.uploadService.handleSaveUploadFile(file, "product");
-                currentUser.setAvatar(img);
-            }
             currentUser.setAddress(user.getAddress());
             currentUser.setFullName(user.getFullName());
             currentUser.setPhone(user.getPhone());
@@ -157,8 +146,8 @@ public class UserController {
     }
 
     @PostMapping("/admin/user/delete")
-    public String postDeleteUser(Model model, @ModelAttribute("newUser") User eric) {
-        this.userService.deleteAUser(eric.getId());
+    public String postDeleteUser(Model model, @ModelAttribute("newUser") User user) {
+        this.userService.deleteAUser(user.getId());
         return "redirect:/admin/user";
     }
 }
