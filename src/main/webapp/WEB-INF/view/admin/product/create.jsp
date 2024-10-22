@@ -8,7 +8,7 @@
                 <meta charset="utf-8" />
                 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-                <meta name="description" content="Dự án FlowerShop" />
+                <meta name="description" content="FlowerShop" />
                 <meta name="author" content="IT" />
                 <title>Create Product </title>
                 <link href="/css/styles.css" rel="stylesheet" />
@@ -107,7 +107,7 @@
                                                         <form:option value="DELL">Dell</form:option>
                                                         <form:option value="LG">LG</form:option>
                                                         <form:option value="ACER">Acer</form:option>
-                                                    </form:select> 
+                                                    </form:select>
                                                     <select id="factory" name="factory"></select>
                                                         <option value="">Select Factory</option>
                                                         <c:forEach var="factory" items="${factories}">
@@ -129,13 +129,10 @@
                                                 <!-- <div class="mb-3 col-12 col-md-6">
                                                     <label class="form-label">Target:</label>
                                                     <form:select class="form-select" path="target">
-                                                        <form:option value="GAMING">Gaming</form:option>
-                                                        <form:option value="SINHVIEN-VANPHONG">Sinh viên - Văn phòng
-                                                        </form:option>
-                                                        <form:option value="THIET-KE-DO-HOA">Thiết kế đồ họa
-                                                        </form:option>
-                                                        <form:option value="MONG-NHE">Mỏng nhẹ</form:option>
-                                                        <form:option value="DOANH-NHAN">Doanh nhân</form:option>
+                                                        <form:option value="CA-NHAN">Cá nhân</form:option>
+                                                        <form:option value="DOANH-NGHIEP">Doanh nghiệp</form:option>
+                                                        <form:option value="SU-KIEN">Sự kiện</form:option>
+                                                        <form:option value="SUU-TAM">Sưu tầm</form:option>
                                                     </form:select>
                                                 </div> -->
                                                 <div class="mb-3 col-12 col-md-6">
@@ -176,7 +173,7 @@
                                                         </c:forEach>
                                                     </select>
                                                 </div>
-                                                
+
                                                 <div class="col-12 mb-5">
                                                     <button type="submit" class="btn btn-primary">Create</button>
                                                 </div>

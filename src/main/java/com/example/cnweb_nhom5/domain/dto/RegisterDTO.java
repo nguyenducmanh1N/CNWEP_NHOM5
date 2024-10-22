@@ -1,8 +1,11 @@
 package com.example.cnweb_nhom5.domain.dto;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import com.example.cnweb_nhom5.service.validator.RegisterChecked;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @RegisterChecked
 public class RegisterDTO {
@@ -18,6 +21,37 @@ public class RegisterDTO {
 
     @Size(min = 3, message = "confirmPassword phải có tối thiểu 3 ký tự")
     private String confirmPassword;
+
+    private String address;
+
+    private String phone;
+
+    private String avatar;
+
+    
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getFirstName() {
         return firstName;

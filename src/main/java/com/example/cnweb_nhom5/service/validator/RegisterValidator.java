@@ -2,10 +2,11 @@ package com.example.cnweb_nhom5.service.validator;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import com.example.cnweb_nhom5.domain.dto.RegisterDTO;
 import com.example.cnweb_nhom5.service.UserService;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 @Service
 public class RegisterValidator implements ConstraintValidator<RegisterChecked, RegisterDTO> {
