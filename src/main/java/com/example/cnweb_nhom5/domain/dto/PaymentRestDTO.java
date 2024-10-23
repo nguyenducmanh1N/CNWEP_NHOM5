@@ -2,7 +2,7 @@ package com.example.cnweb_nhom5.domain.dto;
 
 import java.io.Serializable;
 
-public class PaymentRestDTO implements Serializable{
+public class PaymentRestDTO implements Serializable {
     private String status;
     private String message;
     private String url;

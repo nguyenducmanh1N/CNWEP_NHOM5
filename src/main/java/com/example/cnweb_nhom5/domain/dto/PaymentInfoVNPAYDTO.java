@@ -15,4 +15,37 @@ public class PaymentInfoVNPAYDTO {
         this.receiverAddress = receiverAddress;
         this.receivedPhone = receivedPhone;
     }
+
+    public Long getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(Long paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public String getReceivedName() {
+        return receivedName;
+    }
+
+    public void setReceivedName(String receivedName) {
+        this.receivedName = receivedName;
+    }
+
+    public String getReceiverAddress() {
+        return receiverAddress;
+    }
+
+    public void setReceiverAddress(String receiverAddress) {
+        this.receiverAddress = receiverAddress;
+    }
+
+    public String getReceivedPhone() {
+        return receivedPhone;
+    }
+
+    public void setReceivedPhone(String receivedPhone) {
+        this.receivedPhone = receivedPhone;
+    }
+
 }
