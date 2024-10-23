@@ -1,4 +1,4 @@
-package  com.example.cnweb_nhom5.controller.vnpay;
+package com.example.cnweb_nhom5.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,15 +10,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cnweb_nhom5.config.VNPayConfig;
-
+import com.example.cnweb_nhom5.domain.Cart;
+import com.example.cnweb_nhom5.domain.CartDetail;
 import com.example.cnweb_nhom5.domain.Payment;
-
+import com.example.cnweb_nhom5.domain.Product;
 import com.example.cnweb_nhom5.domain.User;
 import com.example.cnweb_nhom5.domain.dto.PaymentInfoVNPAYDTO;
 import com.example.cnweb_nhom5.domain.dto.PaymentRestDTO;
 import com.example.cnweb_nhom5.domain.dto.TransactionStatusDTO;
 import com.example.cnweb_nhom5.service.PaymentService;
-
+import com.example.cnweb_nhom5.service.ProductService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,11 +38,11 @@ import java.util.*;
 @RequestMapping("/api/payment")
 public class PaymentController {
 
-    
+    private final ProductService productService;
     private final PaymentService paymentService;
 
-    public PaymentController( PaymentService paymentService) {
-
+    public PaymentController(ProductService productService, PaymentService paymentService) {
+        this.productService = productService;
         this.paymentService = paymentService;
     }
 
@@ -50,13 +51,11 @@ public class PaymentController {
     public void createPayment(
             @RequestParam double totalPrice,
             HttpServletResponse response,
-            HttpServletRequest request
-            // ,
-            // @RequestParam("receiverName") String receiverName,
-            // @RequestParam("receiverAddress") String receiverAddress,
-            // @RequestParam("receiverPhone") String receiverPhone,
-            // @RequestParam("paymentId") Long paymentId
-            ) throws IOException {
+            HttpServletRequest request,
+            @RequestParam("receiverName") String receiverName,
+            @RequestParam("receiverAddress") String receiverAddress,
+            @RequestParam("receiverPhone") String receiverPhone,
+            @RequestParam("paymentId") Long paymentId) throws IOException {
 
         System.out.println("Total Price: " + totalPrice);
         // String orderType = req.getParameter("other");
@@ -73,10 +72,10 @@ public class PaymentController {
         // payment_info.put("payment_id", paymentId);
         ObjectMapper mapper = new ObjectMapper();
 
-        // PaymentInfoVNPAYDTO payment_info = new PaymentInfoVNPAYDTO(paymentId, receiverName, receiverAddress,
-        //         receiverPhone);
+        PaymentInfoVNPAYDTO payment_info = new PaymentInfoVNPAYDTO(paymentId, receiverName, receiverAddress,
+                receiverPhone);
 
-        //String payment_info_str = mapper.writeValueAsString(payment_info);
+        String payment_info_str = mapper.writeValueAsString(payment_info);
 
         Map<String, String> vnp_Params = new HashMap<>();
 
@@ -91,7 +90,7 @@ public class PaymentController {
         // vnp_Params.put("vnp_BankCode", bankCode);
         // }
         vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
-        //vnp_Params.put("vnp_OrderInfo", payment_info_str);
+        vnp_Params.put("vnp_OrderInfo", payment_info_str);
         vnp_Params.put("vnp_Locale", "vn");
         // vnp_Params.put("vnp_OrderType", orderType);
         String orderType = "other";
@@ -160,10 +159,10 @@ public class PaymentController {
         // return ResponseEntity.status(HttpStatus.OK).body(paymentRestDTO);
         // + "&receiverName=" + receiverName + "&receiverAddress=" + receiverAddress
         // +"&receiverPhone="+ receiverPhone+"&paymentId="+ paymentId
-        // System.out.println("Receiver Name: " + receiverName);
-        // System.out.println("Receiver Address: " + receiverAddress);
-        // System.out.println("Receiver Phone: " + receiverPhone);
-        // System.out.println("Payment ID: " + paymentId);
+        System.out.println("Receiver Name: " + receiverName);
+        System.out.println("Receiver Address: " + receiverAddress);
+        System.out.println("Receiver Phone: " + receiverPhone);
+        System.out.println("Payment ID: " + paymentId);
         response.sendRedirect(paymentUrl);
     }
 
@@ -186,13 +185,89 @@ public class PaymentController {
             currentUser.setId(id);
         }
 
-        
+        // ObjectMapper mapper = new ObjectMapper();
+        // try {
+        // PaymentInfoVNPAYDTO paymentInfo = mapper.readValue(order,
+        // PaymentInfoVNPAYDTO.class);
+        // System.out.println("PAYMENT INFO:" + paymentInfo);
+
+        // } catch (JsonMappingException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // } catch (JsonProcessingException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+
+        // if (responseCode.equals("00")) {
+
+        // Cart cart = this.productService.fetchByUser(currentUser);
+        // List<CartDetail> cartDetails = cart.getCartDetails();
+
+        // // Duyệt qua từng sản phẩm trong giỏ hàng
+        // for (CartDetail cartDetail : cartDetails) {
+        // Product product = cartDetail.getProduct();
+
+        // // Cập nhật số lượng sold và quantity của sản phẩm
+        // long quantityBought = cartDetail.getQuantity();
+        // product.setSold(product.getSold() + quantityBought);
+        // product.setQuantity(product.getQuantity() - quantityBought);
+
+        // // Lưu thay đổi vào database
+        // productService.createProduct(product);
+        // }
+
+        // this.productService.handlePlaceOrder(currentUser, session,
+        // paymentInfo.getReceiverName(),
+        // paymentInfo.getReceiverAddress(),
+        // paymentInfo.getReceiverPhone(),
+        // paymentInfo.getPaymentId());
+        // } else {
+        // transactionStatusDTO.setStatus("no");
+        // transactionStatusDTO.setMessage("failed");
+        // transactionStatusDTO.setData("");
+
+        // }
         if (responseCode.equals("00")) {
             transactionStatusDTO.setStatus("OK");
             transactionStatusDTO.setMessage("Successfully");
             transactionStatusDTO.setData("");
 
-            
+            ObjectMapper mapper = new ObjectMapper();
+            try {
+                // Lấy thông tin từ vnp_OrderInfo (order)
+                PaymentInfoVNPAYDTO paymentInfo = mapper.readValue(order, PaymentInfoVNPAYDTO.class);
+                System.out.println("PAYMENT INFO: " + paymentInfo);
+
+                // Sử dụng thông tin từ paymentInfo để đặt hàng
+                Cart cart = this.productService.fetchByUser(currentUser);
+                List<CartDetail> cartDetails = cart.getCartDetails();
+
+                // Duyệt qua từng sản phẩm trong giỏ hàng
+                for (CartDetail cartDetail : cartDetails) {
+                    Product product = cartDetail.getProduct();
+
+                    // Cập nhật số lượng sold và quantity của sản phẩm
+                    long quantityBought = cartDetail.getQuantity();
+                    product.setSold(product.getSold() + quantityBought);
+                    product.setQuantity(product.getQuantity() - quantityBought);
+
+                    // Lưu thay đổi vào database
+                    productService.createProduct(product);
+                }
+
+                // Gọi phương thức lưu thông tin đơn hàng với thông tin từ PaymentInfoVNPAYDTO
+                this.productService.handlePlaceOrder(
+                        currentUser, session,
+                        paymentInfo.getReceivedName(),
+                        paymentInfo.getReceiverAddress(),
+                        paymentInfo.getReceivedPhone(),
+                        paymentInfo.getPaymentId());
+            } catch (JsonMappingException e) {
+                e.printStackTrace();
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         } else {
             transactionStatusDTO.setStatus("no");
             transactionStatusDTO.setMessage("failed");
@@ -200,5 +275,4 @@ public class PaymentController {
         }
         return "redirect:/thanks";
     }
-
 }
