@@ -90,4 +90,10 @@ public class UserService {
     // public long countOrders() {
     //     return this.orderRepository.count();
     // }
+    public User findByResetCode(String resetCode) {
+        return userRepository.findByResetCode(resetCode);
+    }
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
